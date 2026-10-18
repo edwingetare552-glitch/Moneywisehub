@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moneywisehub Dashboard</title>
+    <style>
+      :root {
+        --bg: #071722;
+        --bg-2: #0d1f2e;
+        --panel: rgba(12, 26, 38, 0.94);
+        --panel-2: rgba(17, 35, 50, 0.94);
+        --line: rgba(255,255,255,0.08);
+        --primary: #53d1ff;
+        --secondary: #8ef0c9;
+        --text: #edf8ff;
+        --muted: #b6c8d7;
+        --green: #7ef0b4;
+        --red: #ff7a7a;
+        --amber: #ffbf69;
+        --shadow: 0 20px 55px rgba(0,0,0,0.28);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(83,209,255,0.18), transparent 24%),
+          radial-gradient(circle at bottom right, rgba(142,240,201,0.12), transparent 20%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button, input, select { font: inherit; }
+
+      .container { width: min(1280px, calc(100% - 28px)); margin: 0 auto; }
+
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(12px);
+        background: rgba(7, 23, 34, 0.72);
+        border-bottom: 1px solid var(--line);
+        z-index: 10;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 74px;
+      }
+
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; }
+      .brand-badge {
+        width: 36px; height: 36px; border-radius: 12px;
+        display: grid; place-items: center; font-weight: 900;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: #06131f;
+      }
+
+      .nav-links { display: flex; gap: 18px; color: var(--muted); }
+      .nav-links a:hover { color: var(--text); }
+
+      .topbar-actions { display: flex; align-items: center; gap: 12px; }
+      .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.02); color: var(--muted); }
+      .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(126,240,180,0.8); }
+      .button {
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 999px; border: 0; padding: 10px 18px; cursor: pointer; font-weight: 700;
+      }
+      .button.primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #071722; }
+      .button.secondary { background: rgba(255,255,255,0.03); color: var(--text); border: 1px solid var(--line); }
+
+      .dashboard { padding: 26px 0 32px; }
+      .grid { display: grid; grid-template-columns: 240px 1fr; gap: 18px; }
+
+      .sidebar {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px 18px 10px;
+        height: fit-content;
+      }
+      .side-title { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+      .nav-stack { display: grid; gap: 10px; }
+      .side-link {
+        display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; color: var(--muted); border: 1px solid transparent;
+      }
+      .side-link.active { background: rgba(83,209,255,0.07); color: var(--text); border-color: rgba(83,209,255,0.2); }
+      .side-link:hover { border-color: rgba(255,255,255,0.08); }
+
+      .main {
+        display: grid;
+        gap: 18px;
+      }
+
+      .top-cards, .secondary-row, .bottom-grid {
+        display: grid;
+        gap: 18px;
+      }
+      .top-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .secondary-row { grid-template-columns: 1.5fr 0.9fr; }
+      .bottom-grid { grid-template-columns: 1.3fr 0.7fr; }
+
+      .card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .stat-card { padding: 20px; }
+      .stat-header { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.9rem; }
+      .stat-value { font-size: 2rem; font-weight: 800; margin-top: 10px; }
+      .stat-sub { margin-top: 8px; color: var(--muted); font-size: 0.85rem; }
+      .positive { color: var(--green); }
+      .negative { color: var(--red); }
+      .amber { color: var(--amber); }
+
+      .chart-panel .head {
+        display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+      }
+      .chart-panel h3, .panel-title { margin: 0; font-size: 1.12rem; }
+      .tiny { color: var(--muted); font-size: 0.82rem; }
+
+      .line-wrap { margin-top: 16px; }
+      .portfolio-graph { width: 100%; height: 270px; display: block; }
+
+      .watchlist { display: grid; gap: 10px; }
+      .watch-item {
+        display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center;
+        padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+      .watch-item:last-child { border-bottom: none; }
+      .pair { font-weight: 700; }
+      .price { color: var(--muted); }
+      .change { font-weight: 700; }
+
+      .orders-table { width: 100%; border-collapse: collapse; }
+      .orders-table th, .orders-table td {
+        text-align: left; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--muted);
+      }
+      .orders-table th { color: var(--muted); font-weight: 600; }
+      .orders-table td { color: var(--text); }
+      .tag {
+        display: inline-flex; padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+      .buy { background: rgba(126,240,180,0.1); color: var(--green); }
+      .sell { background: rgba(255,122,122,0.1); color: var(--red); }
+
+      .trade-panel {
+        display: grid; gap: 12px;
+      }
+      .field { display: grid; gap: 6px; }
+      .field label { color: var(--muted); font-size: 0.8rem; }
+      .field input, .field select {
+        width: 100%; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.02); color: var(--text); padding: 10px 12px;
+      }
+      .trade-actions { display: flex; gap: 10px; margin-top: 6px; }
+      .trade-actions .button { flex: 1; }
+
+      .activity-list { display: grid; gap: 10px; }
+      .activity-item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+      .activity-item:last-child { border-bottom: 0; }
+      .event-label { font-weight: 700; }
+      .event-meta { color: var(--muted); font-size: 0.8rem; }
+
+      @media (max-width: 980px) {
+        .grid { grid-template-columns: 1fr; }
+        .top-cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .secondary-row, .bottom-grid { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 560px) {
+        .top-cards { grid-template-columns: 1fr; }
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand" aria-label="Moneywisehub dashboard home">
+          <span class="brand-badge">M</span>
+          <span>Moneywisehub</span>
+        </div>
+
+        <nav class="nav-links" aria-label="Main navigation dashboard">
+          <a href="/">Home</a>
+          <a href="/dashboard.html">Dashboard</a>
+          <a href="#orders">Orders</a>
+          <a href="#watchlist">Watchlist</a>
+        </nav>
+
+        <div class="topbar-actions">
+          <span class="pill"><span class="dot"></span> Market live</span>
+          <button class="button primary">Deposit</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container dashboard">
+      <div class="grid">
+        <aside class="sidebar">
+          <div class="side-title">Overview</div>
+          <div class="nav-stack">
+            <a class="side-link active" href="#top"><span>Dashboard</span><span>›</span></a>
+            <a class="side-link" href="#orders"><span>Orders</span><span>›</span></a>
+            <a class="side-link" href="#watchlist"><span>Watchlist</span><span>›</span></a>
+            <a class="side-link" href="#activity"><span>Activity</span><span>›</span></a>
+            <a class="side-link" href="#trade"><span>Trade</span><span>›</span></a>
+          </div>
+        </aside>
+
+        <main class="main">
+          <section class="top-cards">
+            <div class="card stat-card">
+              <div class="stat-header"><span>Portfolio</span><span class="positive">+12.4%</span></div>
+              <div class="stat-value">$84,240</div>
+              <div class="stat-sub">Compared to previous month</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header"><span>Open P/L</span><span class="positive">+$4,210</span></div>
+              <div class="stat-value">$4.2K</div>
+              <div class="stat-sub">Across all active positions</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header"><span>24h Volume</span><span class="positive">+8.1%</span></div>
+              <div class="stat-value">$1.8M</div>
+              <div class="stat-sub">Across major pairs</div>
+            </div>
+
+            <div class="card stat-card">
+              <div class="stat-header"><span>Win Rate</span><span class="amber">68.2%</span></div>
+              <div class="stat-value">68.2%</div>
+              <div class="stat-sub">Last 90 days</div>
+            </div>
+          </section>
+
+          <section class="secondary-row">
+            <div class="card chart-panel" id="top">
+              <div class="head">
+                <h3>Portfolio Growth</h3>
+                <span class="tiny">BTC / ETH / USD</span>
+              </div>
+
+              <svg class="portfolio-graph" viewBox="0 0 820 270" role="img" aria-label="Portfolio growth chart">
+                <defs>
+                  <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#53d1ff" stop-opacity="0.4" />
+                    <stop offset="100%" stop-color="#53d1ff" stop-opacity="0.02" />
+                  </linearGradient>
+                </defs>
+                <g stroke="rgba(255,255,255,0.08)" stroke-width="1">
+                  <line x1="0" y1="40" x2="820" y2="40" />
+                  <line x1="0" y1="90" x2="820" y2="90" />
+                  <line x1="0" y1="140" x2="820" y2="140" />
+                  <line x1="0" y1="190" x2="820" y2="190" />
+                  <line x1="0" y1="240" x2="820" y2="240" />
+                </g>
+                <path d="M0,180 C80,170, 120,145, 170,120 S260,112, 320,95 S420,80, 470,90 S540,45, 600,62 S700,22, 820,45 L820,270 L0,270 Z" fill="url(#chartFill)"/>
+                <path d="M0,180 C80,170, 120,145, 170,120 S260,112, 320,95 S420,80, 470,90 S540,45, 600,62 S700,22, 820,45" fill="none" stroke="#53d1ff" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="card" id="watchlist">
+              <div class="head" style="display:flex;justify-content:space-between;align-items:center; margin-bottom: 8px;">
+                <h3 class="panel-title">Watchlist</h3>
+                <span class="tiny">Live</span>
+              </div>
+
+              <div class="watchlist">
+                <div class="watch-item">
+                  <div><div class="pair">BTC/USD</div></div>
+                  <div class="price">$63,420</div>
+                  <div class="change positive">+2.65%</div>
+                </div>
+                <div class="watch-item">
+                  <div><div class="pair">ETH/USD</div></div>
+                  <div class="price">$3,410</div>
+                  <div class="change positive">+1.92%</div>
+                </div>
+                <div class="watch-item">
+                  <div><div class="pair">SOL/USD</div></div>
+                  <div class="price">$162.80</div>
+                  <div class="change negative">-0.48%</div>
+                </div>
+                <div class="watch-item">
+                  <div><div class="pair">XAU/USD</div></div>
+                  <div class="price">$2,124</div>
+                  <div class="change positive">+0.71%</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="bottom-grid">
+            <div class="card" id="orders">
+              <div class="head" style="display:flex;justify-content:space-between; margin-bottom: 10px;">
+                <h3 class="panel-title">Recent Orders</h3>
+                <span class="tiny">This week</span>
+              </div>
+
+              <table class="orders-table">
+                <thead>
+                  <tr>
+                    <th>Pair</th>
+                    <th>Side</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BTC/USD</td>
+                    <td><span class="tag buy">Buy</span></td>
+                    <td>0.42</td>
+                    <td>$62,760</td>
+                    <td>Filled</td>
+                  </tr>
+                  <tr>
+                    <td>ETH/USD</td>
+                    <td><span class="tag sell">Sell</span></td>
+                    <td>1.8</td>
+                    <td>$3,212</td>
+                    <td>Filled</td>
+                  </tr>
+                  <tr>
+                    <td>SOL/USD</td>
+                    <td><span class="tag buy">Buy</span></td>
+                    <td>24</td>
+                    <td>$162.14</td>
+                    <td>Pending</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card" id="trade">
+              <div class="head" style="display:flex;justify-content:space-between; margin-bottom: 10px;">
+                <h3 class="panel-title">Quick Trade</h3>
+                <span class="tiny">Demo</span>
+              </div>
+
+              <div class="trade-panel">
+                <div class="field">
+                  <label>Asset</label>
+                  <select>
+                    <option>BTC/USD</option>
+                    <option>ETH/USD</option>
+                    <option>SOL/USD</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Order type</label>
+                  <select>
+                    <option>Market</option>
+                    <option>Limit</option>
+                    <option>Stop</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Amount</label>
+                  <input type="number" value="0.25" />
+                </div>
+
+                <div class="trade-actions">
+                  <button class="button primary">Buy</button>
+                  <button class="button secondary">Sell</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" id="activity">
+            <div class="head" style="display:flex;justify-content:space-between; margin-bottom: 10px;">
+              <h3 class="panel-title">Activity Feed</h3>
+              <span class="tiny">Latest</span>
+            </div>
+
+            <div class="activity-list">
+              <div class="activity-item">
+                <div>
+                  <div class="event-label">BTC breakout confirmation</div>
+                  <div class="event-meta">Momentum signal above 50-day trend</div>
+                </div>
+                <div class="positive">+2.4%</div>
+              </div>
+
+              <div class="activity-item">
+                <div>
+                  <div class="event-label">ETH volatility drop</div>
+                  <div class="event-meta">Volatility lowered risk score</div>
+                </div>
+                <div class="positive">+1.1%</div>
+              </div>
+
+              <div class="activity-item">
+                <div>
+                  <div class="event-label">SOL re-test</div>
+                  <div class="event-meta">Support maintained after pullback</div>
+                </div>
+                <div class="amber">Watch</div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
