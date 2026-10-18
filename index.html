@@ -1,1 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moneywisehub | Smarter Trading Starts Here</title>
+    <meta
+      name="description"
+      content="Moneywisehub helps traders discover smarter strategies, manage risk, and grow with confidence."
+    />
+    <style>
+      :root {
+        --bg: #06131f;
+        --bg-soft: #0d1f2e;
+        --panel: rgba(9, 22, 35, 0.8);
+        --panel-strong: #112b41;
+        --primary: #53d1ff;
+        --primary-2: #8ef0c9;
+        --text: #edf8ff;
+        --muted: #b5c7d6;
+        --accent: #ffb95d;
+        --line: rgba(255, 255, 255, 0.08);
+        --success: #7ef0b4;
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      }
 
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(83, 209, 255, 0.22), transparent 25%),
+          radial-gradient(circle at top right, rgba(142, 240, 201, 0.18), transparent 25%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a { color: inherit; text-decoration: none; }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(12px);
+        background: rgba(6, 19, 31, 0.7);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 74px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-badge {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #06131f;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+      }
+
+      .nav-links a:hover { color: var(--text); }
+
+      .button {
+        display: inline-block;
+        border: 0;
+        border-radius: 999px;
+        padding: 14px 22px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button:hover { transform: translateY(-1px); }
+
+      .button.primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #06131f;
+        box-shadow: 0 10px 25px rgba(83, 209, 255, 0.25);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--line);
+        color: var(--text);
+      }
+
+      .hero {
+        padding: 80px 0 44px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(83, 209, 255, 0.08);
+        border: 1px solid rgba(83, 209, 255, 0.2);
+        color: var(--primary);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(2.5rem, 5vw, 5rem);
+        line-height: 1.05;
+      }
+
+      .lead {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 650px;
+      }
+
+      .cta-row {
+        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .stats {
+        margin-top: 34px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+      }
+
+      .stat-box {
+        min-width: 120px;
+      }
+
+      .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, rgba(18, 38, 54, 0.92), rgba(8, 18, 29, 0.92));
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .chart {
+        background: linear-gradient(180deg, rgba(83, 209, 255, 0.08), rgba(255, 255, 255, 0.02));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 18px;
+      }
+
+      .chart-value {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        margin-top: 8px;
+        color: var(--text);
+      }
+
+      .svg-graph {
+        width: 100%;
+        height: 200px;
+        display: block;
+        margin-top: 12px;
+      }
+
+      .mini-cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .mini-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .mini-card .label {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .mini-card .value {
+        margin-top: 8px;
+        font-size: 1.3rem;
+        font-weight: 800;
+      }
+
+      section {
+        padding: 30px 0 70px;
+      }
+
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        text-align: center;
+        margin: 0 0 18px;
+      }
+
+      .section-subtitle {
+        color: var(--muted);
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 36px;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 28px 22px;
+      }
+
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(83, 209, 255, 0.18), rgba(142, 240, 201, 0.14));
+        border: 1px solid rgba(83, 209, 255, 0.2);
+        font-size: 1.5rem;
+        color: var(--primary);
+      }
+
+      .feature-card h3 {
+        font-size: 1.35rem;
+        margin: 18px 0 12px;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .plan {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 26px 22px;
+      }
+
+      .plan.highlight {
+        background: linear-gradient(180deg, rgba(83, 209, 255, 0.08), rgba(17, 43, 65, 0.7));
+        border-color: rgba(83, 209, 255, 0.35);
+      }
+
+      .plan h3 {
+        margin: 0 0 10px;
+        font-size: 1.5rem;
+      }
+
+      .price {
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin: 22px 0;
+      }
+
+      .plan ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+        color: var(--muted);
+      }
+
+      .plan li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .cta-panel {
+        margin-top: 28px;
+        background: linear-gradient(135deg, rgba(83, 209, 255, 0.12), rgba(142, 240, 201, 0.08));
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 36px 26px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .cta-panel h3 {
+        margin: 0 0 8px;
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+      }
+
+      .cta-panel p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      footer {
+        padding: 30px 0 50px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      @media (max-width: 860px) {
+        .hero-grid,
+        .features,
+        .pricing,
+        .cta-panel,
+        .footer-wrap {
+          grid-template-columns: 1fr;
+          display: block;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 60px;
+        }
+
+        .cta-panel {
+          text-align: center;
+        }
+
+        .cta-panel .button {
+          margin-top: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="Moneywisehub home">
+          <span class="brand-badge">M</span>
+          <span>Moneywisehub</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <a class="button primary" href="#contact">Get Started</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">Smart trading • Better decisions</div>
+            <h1>Trade with clarity. Grow with confidence.</h1>
+            <p class="lead">
+              Moneywisehub helps traders access structured market insight, disciplined strategy,
+              and tools designed to make smarter decisions in every session.
+            </p>
+
+            <div class="cta-row">
+              <a class="button primary" href="#pricing">Start Trading</a>
+              <a class="button secondary" href="#features">See Features</a>
+            </div>
+
+            <div class="stats" aria-label="Platform stats">
+              <div class="stat-box">
+                <div class="stat-value">14K+</div>
+                <div class="stat-label">Active users</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value">92%</div>
+                <div class="stat-label">Strategy clarity</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Market access</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-card" aria-label="Market dashboard preview">
+            <div class="chart">
+              <div class="chart-header">
+                <span>Portfolio Value</span>
+                <span style="color: var(--success);">+12.4%</span>
+              </div>
+              <div class="chart-value">$84,240</div>
+
+              <svg class="svg-graph" viewBox="0 0 450 180" role="img" aria-label="Line graph showing portfolio growth">
+                <defs>
+                  <linearGradient id="lineGlow" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#53d1ff" />
+                    <stop offset="100%" stop-color="#8ef0c9" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,140 C50,130, 90,110, 120,115 S180,65, 210,75 S270,30, 300,65 S370,80, 420,40 S440,32, 450,30" fill="none" stroke="url(#lineGlow)" stroke-width="4" stroke-linecap="round" />
+                <path d="M0,140 C50,130, 90,110, 120,115 S180,65, 210,75 S270,30, 300,65 S370,80, 420,40 S440,32, 450,30 L450,180 L0,180 Z" fill="rgba(83,209,255,0.12)"/>
+              </svg>
+            </div>
+
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="label">Win rate</div>
+                <div class="value">68.2%</div>
+              </div>
+              <div class="mini-card">
+                <div class="label">Risk score</div>
+                <div class="value">Low</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <h2 class="section-title">Everything you need to trade better</h2>
+          <p class="section-subtitle">
+            From strategy planning to risk awareness, Moneywisehub brings together the essentials to help
+            you make calmer, better-informed trading decisions.
+          </p>
+
+          <div class="features">
+            <article class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3>Market Insights</h3>
+              <p>Track trends with clear, easy-to-read market signals and unified performance data.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">🧠</div>
+              <h3>Smart Strategy</h3>
+              <p>Build disciplined plans with risk-aware frameworks designed for long-term consistency.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">🛡️</div>
+              <h3>Risk Control</h3>
+              <p>Stay focused with clear alerts, controlled exposure, and smarter portfolio guidance.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing">
+        <div class="container">
+          <h2 class="section-title">Simple plans for every trader</h2>
+          <p class="section-subtitle">
+            Start small, learn fast, and scale with a platform built for confidence and control.
+          </p>
+
+          <div class="pricing">
+            <div class="plan">
+              <h3>Starter</h3>
+              <div class="price">$0</div>
+              <ul>
+                <li>Basic market dashboard</li>
+                <li>Daily trade ideas</li>
+                <li>Community access</li>
+              </ul>
+              <a class="button secondary" href="#contact">Try Free</a>
+            </div>
+
+            <div class="plan highlight">
+              <h3>Pro</h3>
+              <div class="price">$29<span style="font-size:1rem; color: var(--muted);">/mo</span></div>
+              <ul>
+                <li>Advanced strategy tools</li>
+                <li>Risk tracking</li>
+                <li>Priority support</li>
+              </ul>
+              <a class="button primary" href="#contact">Choose Pro</a>
+            </div>
+
+            <div class="plan">
+              <h3>Elite</h3>
+              <div class="price">$79<span style="font-size:1rem; color: var(--muted);">/mo</span></div>
+              <ul>
+                <li>Custom workflow</li>
+                <li>Expert tracking</li>
+                <li>Premium onboarding</li>
+              </ul>
+              <a class="button secondary" href="#contact">Get Elite</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <div class="cta-panel">
+            <div>
+              <h3>Built for modern traders.</h3>
+              <p>Moneywisehub brings together insight, discipline, and strategy in one place.</p>
+            </div>
+            <a class="button primary" href="#contact">Join the platform</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="container footer-wrap">
+        <div>
+          <strong>Moneywisehub</strong><br />
+          <span>Smart trading for the next generation.</span>
+        </div>
+        <div>
+          Email: hello@moneywisehub.site
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
